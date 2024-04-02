@@ -95,6 +95,7 @@ const About = () => {
           {MOCK_BRANDS.map((item, i) => (
             <Image
               key={i}
+              width={220}
               height={128}
               src={item}
               alt={'Logo ' + (i + 1)}

@@ -1,5 +1,5 @@
-import { Montserrat, Rubik } from 'next/font/google'
 import './globals.scss'
+import { Montserrat, Rubik } from 'next/font/google'
 import clsx from 'clsx'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'

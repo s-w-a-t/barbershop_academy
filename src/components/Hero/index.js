@@ -78,12 +78,13 @@ const Hero = () => {
           {MOCK_LIST.map((item, i) => (
             <SwiperSlide key={i}>
               <Image
-                fill
+                width={1440}
+                height={1080}
                 priority
                 sizes="(max-width: 739.98px) 93vw, 100vw"
                 src={item}
                 alt={'Image ' + (i + 1)}
-                className={s.hero_pic}
+                className={clsx(s.hero_pic, s.main)}
               />
             </SwiperSlide>
           ))}
