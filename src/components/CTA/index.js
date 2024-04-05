@@ -2,24 +2,20 @@ import React from 'react'
 import clsx from 'clsx'
 import s from './CTA.module.scss'
 
-const CTA = () => {
+const CTA = ({ title, descr, btnText, btnLink }) => {
   return (
     <section className={clsx('container', s.cta)}>
-      <h2 className={clsx('h2', s.cta_title)}>Напиши босу</h2>
+      <h2 className={clsx('h2', s.cta_title)}>{title}</h2>
 
-      <p className={s.cta_descr}>
-        Ми прагнемо до довгострокових відносин з нашими гостями, друзями та
-        партнерами. Щоб наш сервіс став ще кращим, а стосунки стали міцнішими,
-        ми цінуємо ваші відгуки та побажання. Будь ласка, пишіть мені особисто,
-        якщо у вас виникли зауваження або пропозиції щодо роботи Brutal. Ваша
-        інформація буде збережена в конфіденційності.
-      </p>
+      <p className={s.cta_descr}>{descr}</p>
 
       <a
-        href="mailto:bbrutalbarbershop@gmail.com"
+        href={btnLink}
+        target="_blank"
+        rel="noopener nofollow"
         className={clsx('btn btn--secondary', s.cta_btn)}
       >
-        Написати
+        {btnText}
       </a>
     </section>
   )

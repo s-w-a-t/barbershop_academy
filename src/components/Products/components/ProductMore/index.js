@@ -2,9 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import s from './ProductMore.module.scss'
 
-const MOCK_FOOTNOTE = 'Для замовлення зв’яжіться з своїм барбером'
-
-const ProductMore = ({ title, label, pic, descr }) => {
+const ProductMore = ({ title, label, pic, descr, footnote }) => {
   return (
     <div className={s.productMore}>
       <span className={s.productMore_title}>{title}</span>
@@ -14,6 +12,8 @@ const ProductMore = ({ title, label, pic, descr }) => {
       <Image
         src={pic}
         alt={title}
+        placeholder="blur"
+        blurDataURL={pic.blurhash}
         width={220}
         height={313}
         className={s.productMore_pic}
@@ -21,7 +21,7 @@ const ProductMore = ({ title, label, pic, descr }) => {
 
       <p className={s.productMore_descr}>{descr}</p>
 
-      <p className={s.productMore_footnote}>{MOCK_FOOTNOTE}</p>
+      {footnote && <p className={s.productMore_footnote}>{footnote}</p>}
     </div>
   )
 }

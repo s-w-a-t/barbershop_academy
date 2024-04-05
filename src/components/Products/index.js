@@ -11,18 +11,7 @@ import Popup from '../Popup'
 import ProductMore from './components/ProductMore'
 import s from './Products.module.scss'
 
-const MOCK_LIST = Array.from({ length: 10 })
-
-const MOCK_ITEM = {
-  pic: 'https://picsum.photos/600/900.webp',
-  title: 'Парфум для бороди',
-  label: 'Nishman Beard & Mustache Parfum Adonis 75ml',
-  descr:
-    'Тут може бути якась додаткова інформація чи характеристики даного продукт або спосіб використання і ще багато речей, які можна описати в цьому рядку',
-  link: '#',
-}
-
-const Products = () => {
+const Products = ({ title, buttonText, footnote, list }) => {
   const isMobile = useMatchMedia('(max-width: 739.98px)')
 
   const swiperParams = {
@@ -31,7 +20,7 @@ const Products = () => {
     spaceBetween: 9,
     slidesPerView: 'auto',
     pagination:
-      MOCK_LIST.length > 4 || (MOCK_LIST.length > 2 && isMobile)
+      list.length > 4 || (list.length > 2 && isMobile)
         ? {
             clickable: true,
           }
@@ -48,34 +37,36 @@ const Products = () => {
   }
   return (
     <section className={clsx('container', s.products)}>
-      <h2 className="title-indent">Догляд</h2>
+      <h2 className="title-indent">{title}</h2>
 
       <div
         className={clsx(s.products_wrapper, {
-          [s.pagination]: MOCK_LIST.length > 4,
+          [s.pagination]: list.length > 4,
         })}
       >
         <Swiper {...swiperParams} className={s.products_list}>
-          {MOCK_LIST.map((_, i) => (
+          {list.map(({ name, label, description, pic }, i) => (
             <SwiperSlide key={i} className={s.products_item}>
               <div
                 className={clsx(s.products_media, {
-                  [s.bg]: !!MOCK_ITEM.descr,
+                  [s.bg]: !!description,
                 })}
               >
                 <Image
-                  src={MOCK_ITEM.pic + `?${i}`}
-                  alt={MOCK_ITEM.title}
+                  src={pic.url}
+                  alt={name}
+                  placeholder="blur"
+                  blurDataURL={pic.blurhash}
                   fill
                   sizes="(max-width: 739.98px) 167px, 283px"
                   className={s.products_pic}
                 />
               </div>
 
-              <span className={s.products_title}>{MOCK_ITEM.title}</span>
-              <span className={s.products_label}>{MOCK_ITEM.label}</span>
+              <span className={s.products_title}>{name}</span>
+              <span className={s.products_label}>{label}</span>
 
-              {MOCK_ITEM.descr && (
+              {description && (
                 <Popup
                   variant="product"
                   triger={
@@ -83,15 +74,16 @@ const Products = () => {
                       type="button"
                       className={clsx('btn btn--secondary', s.products_btn)}
                     >
-                      Детальніше
+                      {buttonText}
                     </button>
                   }
                 >
                   <ProductMore
-                    title={MOCK_ITEM.title}
-                    label={MOCK_ITEM.label}
-                    pic={MOCK_ITEM.pic + `?${i}`}
-                    descr={MOCK_ITEM.descr}
+                    title={name}
+                    label={label}
+                    pic={pic.url}
+                    descr={description}
+                    footnote={footnote}
                   />
                 </Popup>
               )}
@@ -102,13 +94,13 @@ const Products = () => {
           type="prev"
           variant="products"
           withPagination
-          hidden={isMobile || MOCK_LIST.length < 5}
+          hidden={isMobile || list.length < 5}
         />
         <SwiperArrowButton
           type="next"
           variant="products"
           withPagination
-          hidden={isMobile || MOCK_LIST.length < 5}
+          hidden={isMobile || list.length < 5}
         />
       </div>
     </section>

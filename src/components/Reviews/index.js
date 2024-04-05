@@ -10,7 +10,7 @@ import Star from '@/assets/icons/star.svg'
 import SwiperArrowButton from '../SwiperArrowButton'
 import s from './Reviews.module.scss'
 
-const Reviews = ({ list }) => {
+const Reviews = ({ title, list }) => {
   const isMobile = useMatchMedia('(max-width: 739.98px)')
 
   const swiperParams = {
@@ -44,7 +44,7 @@ const Reviews = ({ list }) => {
 
   return (
     <section className={clsx('container', s.reviews)}>
-      <h2 className={clsx('title-indent')}>Відгуки</h2>
+      <h2 className={clsx('title-indent')}>{title}</h2>
 
       <div
         className={clsx(s.reviews_wrapper, {
@@ -54,49 +54,39 @@ const Reviews = ({ list }) => {
         <Swiper {...swiperParams} className={s.reviews_list}>
           {list
             .filter((item) => item.rating === 5)
-            .map(
-              ({ author_name, text, profile_photo_url, rating, time }, i) => {
-                return (
-                  <SwiperSlide key={i} className={s.reviews_item}>
-                    <div className={s.reviews_heading}>
-                      {/* <Image
-                        width={64}
-                        height={64}
-                        src={profile_photo_url}
-                        alt={author_name}
-                        className={s.reviews_pic}
-                      /> */}
-
-                      <div className={s.reviews_media}>
-                        {shortName(author_name)}
-                      </div>
-
-                      <div className={s.reviews_author}>
-                        <span className={s.reviews_name}>{author_name}</span>
-                        <ul className={s.reviews_rating}>
-                          {[...Array(5)].map((_, i) => {
-                            return (
-                              <li
-                                key={i}
-                                className={clsx(s.reviews_star, {
-                                  [s.empty]: rating <= i,
-                                })}
-                              >
-                                <Star />
-                              </li>
-                            )
-                          })}
-                        </ul>
-                      </div>
-
-                      <span className={s.reviews_date}>{formatDate(time)}</span>
+            .map(({ author_name, text, rating, time }, i) => {
+              return (
+                <SwiperSlide key={i} className={s.reviews_item}>
+                  <div className={s.reviews_heading}>
+                    <div className={s.reviews_media}>
+                      {shortName(author_name)}
                     </div>
 
-                    <p className={s.reviews_text}>{text}</p>
-                  </SwiperSlide>
-                )
-              }
-            )}
+                    <div className={s.reviews_author}>
+                      <span className={s.reviews_name}>{author_name}</span>
+                      <ul className={s.reviews_rating}>
+                        {[...Array(5)].map((_, i) => {
+                          return (
+                            <li
+                              key={i}
+                              className={clsx(s.reviews_star, {
+                                [s.empty]: rating <= i,
+                              })}
+                            >
+                              <Star />
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </div>
+
+                    <span className={s.reviews_date}>{formatDate(time)}</span>
+                  </div>
+
+                  <p className={s.reviews_text}>{text}</p>
+                </SwiperSlide>
+              )
+            })}
         </Swiper>
         <SwiperArrowButton
           type="prev"

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Marquee from 'react-fast-marquee'
@@ -10,21 +10,31 @@ import { Autoplay, Pagination } from 'swiper/modules'
 import { onAutoplayTimeLeft } from '@/utils/onAutoplayTimeLeft'
 import s from './About.module.scss'
 
-import proraso from '@/assets/img/brands/proraso.avif'
-import uppercut from '@/assets/img/brands/uppercut.avif'
-import wahl from '@/assets/img/brands/wahl.avif'
-import mitte from '@/assets/img/brands/mitte.avif'
-import reuzel from '@/assets/img/brands/reuzel.avif'
-import franz from '@/assets/img/brands/franz.avif'
-
-const MOCK_BRANDS = [proraso, uppercut, wahl, mitte, reuzel, franz]
-const MOCK_VIDEO = 'https://www.youtube.com/watch?v=AXH1r0cyacU'
-const MOCK_LIST = Array.from({ length: 4 })
-
-const About = () => {
+const About = ({ title, descr, video, pics, brands }) => {
   const containerRef = useRef(null)
-
   const [play, setPlay] = useState(false)
+
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef(null)
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0,
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsVisible(entry.isIntersecting)
+    }, options)
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current)
+      }
+    }
+  }, [])
 
   const swiperParams = {
     updateOnWindowResize: true,
@@ -41,32 +51,28 @@ const About = () => {
     },
   }
   return (
-    <section id="about" className={clsx('container', s.about)}>
+    <section ref={sectionRef} id="about" className={clsx('container', s.about)}>
       <div className={s.about_inner}>
-        <h2 className={s.about_title}>Про нас</h2>
+        <h2 className={s.about_title}>{title}</h2>
 
-        <p className={s.about_descr}>
-          Це не лише місце, де ви довіряєте свій вигляд професіоналам, але й
-          атмосфера, де ви можете відчути себе комфортно та вільно. Тут чоловік
-          виходить не просто з ідеальною стрижкою, а з атмосферою справжнього
-          мужності. Вперед, до чоловічого стилю без обмежень у Brutal
-          Barbershop!"
-        </p>
+        <p className={s.about_descr}>{descr}</p>
 
         <div className={s.about_video}>
-          <Video
-            url={MOCK_VIDEO}
-            autoPlay
-            playsInline
-            playing={play}
-            muted
-            onReady={() => setPlay(true)}
-          />
+          {isVisible && (
+            <Video
+              url={video.url}
+              autoPlay
+              playsInline
+              playing={play}
+              muted
+              onReady={() => setPlay(true)}
+            />
+          )}
         </div>
 
         <div
           ref={containerRef}
-          className={clsx(s.about_gallery, { [s.wide]: MOCK_LIST.length > 1 })}
+          className={clsx(s.about_gallery, { [s.wide]: pics.length > 1 })}
         >
           <Swiper
             {...swiperParams}
@@ -75,12 +81,14 @@ const About = () => {
             }
             className={s.about_list}
           >
-            {MOCK_LIST.map((_, i) => (
+            {pics.map(({ url, basename, blurhash, alt }, i) => (
               <SwiperSlide key={i} className={s.about_media}>
                 <Image
-                  src={'https://picsum.photos/550/850.webp' + `?${i}`}
-                  alt={'Image ' + (i + 1)}
+                  src={url}
+                  alt={alt || basename}
                   fill
+                  placeholder="blur"
+                  blurDataURL={blurhash}
                   sizes="(max-width: 739.98px) 278px, 405px"
                   className={s.about_pic}
                 />
@@ -91,14 +99,16 @@ const About = () => {
       </div>
 
       <div className={s.about_brands}>
-        <Marquee autoFill>
-          {MOCK_BRANDS.map((item, i) => (
+        <Marquee>
+          {brands.map(({ url, basename, alt, width, height, blurhash }, i) => (
             <Image
               key={i}
-              width={220}
-              height={128}
-              src={item}
-              alt={'Logo ' + (i + 1)}
+              width={width || 220}
+              height={height || 128}
+              placeholder="blur"
+              blurDataURL={blurhash}
+              src={url}
+              alt={alt || basename}
               className={s.about_logo}
             />
           ))}

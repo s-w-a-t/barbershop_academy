@@ -129,7 +129,8 @@
 
   &_slide {
     display: grid;
-    place-items: center;
+    justify-items: center;
+    height: auto;
     transition-timing-function: ease-in-out;
     transition-duration: 250ms;
 
@@ -161,6 +162,12 @@
   &_pics {
     position: absolute;
     inset: 0;
+  }
+
+  &_pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   &_name {

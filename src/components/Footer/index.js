@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import clsx from 'clsx'
 import Logo from '../Logo'
@@ -7,19 +5,19 @@ import Menu from '../Menu'
 import Socials from '../Socials'
 import s from './Footer.module.scss'
 
-const Footer = () => {
+const Footer = ({ instagram, telegram, logo, menu, copy }) => {
   const currentYear = new Date().getFullYear()
 
   return (
     <footer className={clsx('container', s.footer)}>
-      <Logo variant="footer" />
+      <Logo pic={logo} variant="footer" />
 
-      <Socials variant="footer" />
+      <Socials instagram={instagram} telegram={telegram} variant="footer" />
 
-      <Menu variant="footer" />
+      <Menu data={menu} variant="footer" />
 
       <p className={s.footer_copy}>
-        © {currentYear} Brutal Barbershop. Всі права застережено
+        © {currentYear} {copy}
       </p>
     </footer>
   )

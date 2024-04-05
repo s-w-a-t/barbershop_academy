@@ -37,6 +37,7 @@
     @media (width >= 740px) {
       position: absolute;
       inset: 0;
+      z-index: -1;
     }
 
     @media (width <= 739.98px) {

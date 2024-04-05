@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import clsx from 'clsx'
 import gsap from 'gsap'
@@ -6,37 +8,10 @@ import s from './Menu.module.scss'
 
 gsap.registerPlugin(ScrollToPlugin)
 
-const DATA = [
-  {
-    name: 'Про нас',
-    link: '#about',
-  },
-  {
-    name: 'Галерея',
-    link: '#gallery',
-  },
-  {
-    name: 'Послуги',
-    link: '#services',
-  },
-  {
-    name: 'Вибір спеціаліста',
-    link: '#barbers',
-  },
-  {
-    name: 'Школа барберів',
-    link: '#school',
-  },
-  {
-    name: 'Контакти',
-    link: '#contacts',
-  },
-]
-
-const Menu = ({ variant, handleClose }) => {
+const Menu = ({ data, variant, handleClose }) => {
   return (
     <ul className={clsx(s.menu, { [s[variant]]: variant })}>
-      {DATA.map(({ name, link }, i) => {
+      {data.map(({ name, link }, i) => {
         const handleScroll = (e) => {
           e.preventDefault()
           gsap.to(window, { scrollTo: link, ease: 'power2' })

@@ -8,77 +8,39 @@ import { Navigation, EffectFade, Autoplay } from 'swiper/modules'
 import SwiperArrowButton from '../SwiperArrowButton'
 import s from './Barbers.module.scss'
 
-const MOCK_LIST = [
-  {
-    level: 'base',
-  },
-  {
-    level: 'base',
-  },
-  {
-    level: 'base',
-  },
-  {
-    level: 'base',
-  },
-  {
-    level: 'upper',
-  },
-  {
-    level: 'upper',
-  },
-  {
-    level: 'top',
-  },
-  {
-    level: 'top',
-  },
-  {
-    level: 'top',
-  },
-  {
-    level: 'top',
-  },
-]
-
-const MOCK_ITEM = {
-  pics: [
-    'https://picsum.photos/600/800',
-    'https://picsum.photos/600/800',
-    'https://picsum.photos/600/800',
-  ],
-  name: 'Ім’я Барбера',
-  descr:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-  link: '#',
-}
-
-const Barbers = () => {
-  const LIST_BASE = MOCK_LIST.filter((item) => item.level === 'base')
-  const LIST_UPPER = MOCK_LIST.filter((item) => item.level === 'upper')
-  const LIST_TOP = MOCK_LIST.filter((item) => item.level === 'top')
+const Barbers = ({
+  title,
+  labelBase,
+  labelUpper,
+  labelTop,
+  buttonText,
+  list,
+}) => {
+  const LIST_BASE = list.filter((item) => item.level === 'base')
+  const LIST_UPPER = list.filter((item) => item.level === 'upper')
+  const LIST_TOP = list.filter((item) => item.level === 'top')
 
   const tabs = [
     {
       label: 'Всі',
-      content: MOCK_LIST,
+      content: list,
     },
     {
-      label: 'Барбери',
+      label: labelBase,
       content: LIST_BASE,
     },
     {
-      label: 'Старші барбери',
+      label: labelUpper,
       content: LIST_UPPER,
     },
     {
-      label: 'Топ барбери',
+      label: labelTop,
       content: LIST_TOP,
     },
   ]
 
-  const [activeTab, setActiveTab] = useState(tabs[0])
-  const [list, setList] = useState(MOCK_LIST)
+  const [activeTab, setActiveTab] = useState(tabs[0].label)
+  const [activeList, setActiveList] = useState(list)
 
   const swiperRef = useRef(null)
 
@@ -114,7 +76,7 @@ const Barbers = () => {
   return (
     <section id="barbers" className={clsx('container', s.barbers)}>
       <div className={s.barbers_heading}>
-        <h2 className="title-indent">Барбери</h2>
+        <h2 className="title-indent">{title}</h2>
 
         <div className={s.barbers_tabs}>
           {tabs.map(({ label, content }) => (
@@ -123,12 +85,12 @@ const Barbers = () => {
               type="button"
               onClick={() => {
                 setActiveTab(label)
-                setList(content)
+                setActiveList(content)
                 goToFirstSlide()
               }}
-              disabled={label === activeTab || content === list}
+              disabled={label === activeTab}
               className={clsx(s.barbers_tab, {
-                [s.active]: label === activeTab || content === list,
+                [s.active]: label === activeTab,
               })}
             >
               {label}
@@ -139,11 +101,11 @@ const Barbers = () => {
 
       <div className={s.barbers_wrapper}>
         <Swiper ref={swiperRef} {...swiperParams} className={s.barbers_list}>
-          {list.map(({ level }, i) => (
+          {activeList.map(({ name, description, link, pics }, i) => (
             <SwiperSlide key={i} className={s.barbers_slide}>
               <div className={s.barbers_item}>
                 <div className={s.barbers_media}>
-                  {MOCK_ITEM.pics.length > 1 ? (
+                  {pics.length > 1 ? (
                     <Swiper
                       effect="fade"
                       autoplay={{
@@ -153,36 +115,46 @@ const Barbers = () => {
                       modules={[Autoplay, EffectFade]}
                       className={s.barbers_pics}
                     >
-                      {MOCK_ITEM.pics.map((item, j) => (
+                      {pics.map(({ url, blurhash }, j) => (
                         <SwiperSlide key={j}>
                           <Image
-                            src={item + '?' + i + j + level}
-                            alt={MOCK_ITEM.name}
-                            fill
+                            src={url}
+                            alt={name}
+                            width={293}
+                            height={392}
+                            placeholder="blur"
+                            blurDataURL={blurhash}
                             sizes="293px"
+                            className={s.barbers_pic}
                           />
                         </SwiperSlide>
                       ))}
                     </Swiper>
                   ) : (
                     <Image
-                      src={MOCK_ITEM.pics[0] + `?${i}`}
-                      alt={MOCK_ITEM.name}
-                      fill
+                      src={pics[0].url}
+                      alt={name}
+                      width={293}
+                      height={392}
+                      placeholder="blur"
+                      blurDataURL={pics[0].blurhash}
                       sizes="293px"
+                      className={s.barbers_pic}
                     />
                   )}
                 </div>
 
-                <span className={s.barbers_name}>{MOCK_ITEM.name}</span>
-                <span className={s.barbers_descr}>{MOCK_ITEM.descr}</span>
+                <span className={s.barbers_name}>{name}</span>
+                <span className={s.barbers_descr}>{description}</span>
 
-                <a
-                  href={MOCK_ITEM.link}
-                  className={clsx('btn btn--primary', s.barbers_btn)}
-                >
-                  Запис
-                </a>
+                {!!link && (
+                  <a
+                    href={link}
+                    className={clsx('btn btn--primary', s.barbers_btn)}
+                  >
+                    {buttonText}
+                  </a>
+                )}
               </div>
             </SwiperSlide>
           ))}
@@ -190,13 +162,13 @@ const Barbers = () => {
         <SwiperArrowButton
           type="prev"
           variant="barbers"
-          hidden={list.length < 2}
+          hidden={activeList.length < 2}
           className={clsx('aaaa', s.barbers_arrow, s.prev)}
         />
         <SwiperArrowButton
           type="next"
           variant="barbers"
-          hidden={list.length < 2}
+          hidden={activeList.length < 2}
           className={clsx('aaaa', s.barbers_arrow, s.next)}
         />
       </div>

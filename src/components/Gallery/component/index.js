@@ -36,8 +36,10 @@ const GalleryItem = ({ pic, index, data, setPlay }) => {
       triger={
         <button className={s.item}>
           <Image
-            src={pic}
-            alt={'Image ' + (index + 1)}
+            src={pic.url}
+            alt={pic.alt || pic.basename}
+            placeholder="blur"
+            blurDataURL={pic.blurhash}
             fill
             sizes="324px"
             className={s.item_pic}
@@ -60,8 +62,10 @@ const GalleryItem = ({ pic, index, data, setPlay }) => {
           <SwiperSlide key={+index + j} className={s.item_slide}>
             <div className={s.item_slideMedia}>
               <Image
-                src={item}
-                alt={'Image ' + (index + 1)}
+                src={item.url}
+                alt={item.alt || item.basename}
+                placeholder="blur"
+                blurDataURL={item.blurhash}
                 fill
                 sizes="(max-width: 739.98px) calc(100vw - 64px), 624px"
                 className={s.item_slidePic}

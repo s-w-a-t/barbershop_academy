@@ -6,24 +6,19 @@ import Menu from '../Menu'
 import clsx from 'clsx'
 import s from './Header.module.scss'
 
-const BTN_MOCK = {
-  title: 'Запис',
-  link: 'https://b490296.alteg.io/company/464036',
-}
-
-const BtnCta = ({ data, handleClose, className }) => (
+const BtnCta = ({ orderLabel, orderLink, handleClose, className }) => (
   <a
-    href={data.link}
+    href={orderLink}
     target="_blank"
     rel="noopener noreferrer"
     onClick={handleClose ? handleClose : null}
     className={clsx('btn btn--primary', s.header_btn, className)}
   >
-    {data.title}
+    {orderLabel}
   </a>
 )
 
-const Header = () => {
+const Header = ({ logo, menu, orderLabel, orderLink }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const handleToggle = () => {
     setIsMenuOpen((prevState) => !prevState)
@@ -53,19 +48,24 @@ const Header = () => {
 
   return (
     <header className={clsx('container', s.header)}>
-      <Logo variant="header" isPriority />
+      <Logo pic={logo} variant="header" isPriority />
 
       <nav className={clsx(s.header_nav, { [s.show]: isMenuOpen })}>
-        <Menu variant="header" handleClose={handleClose} />
+        <Menu data={menu} variant="header" handleClose={handleClose} />
 
         <BtnCta
-          data={BTN_MOCK}
+          orderLabel={orderLabel}
+          orderLink={orderLink}
           className={s.mobile}
           handleClose={handleClose}
         />
       </nav>
 
-      <BtnCta data={BTN_MOCK} className={s.desktop} />
+      <BtnCta
+        orderLabel={orderLabel}
+        orderLink={orderLink}
+        className={s.desktop}
+      />
 
       <button
         tyoe="button"

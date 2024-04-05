@@ -16,22 +16,10 @@ import ArrowRight from '@/assets/icons/arrow-right.svg'
 import Lines from '../Lines'
 import s from './Hero.module.scss'
 
-import hero1 from '@/assets/img/hero/hero1.avif'
-import hero2 from '@/assets/img/hero/hero2.avif'
-import hero3 from '@/assets/img/hero/hero1.avif'
-import hero4 from '@/assets/img/hero/hero2.avif'
-
-const MOCK_LIST = [hero1, hero2, hero3, hero4]
-
-const BTN_MOCK = {
-  title: 'Запис',
-  link: 'https://b490296.alteg.io/company/464036',
-}
-
-const Hero = () => {
+const Hero = ({ orderLabel, orderLink, title, label, pics }) => {
   const containerRef = useRef(null)
 
-  const thumbs = MOCK_LIST.slice(1).concat(MOCK_LIST[0])
+  const thumbs = pics.slice(1).concat(pics[0])
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
@@ -65,7 +53,7 @@ const Hero = () => {
   return (
     <section ref={containerRef} className={s.hero}>
       <div className={s.hero_wrapper}>
-        <span className={s.hero_label}>Brutal</span>
+        <span className={s.hero_label}>{label}</span>
 
         <Swiper
           {...swiperMainParams}
@@ -75,15 +63,17 @@ const Hero = () => {
           thumbs={{ swiper: thumbsSwiper }}
           className={s.hero_pics}
         >
-          {MOCK_LIST.map((item, i) => (
+          {pics.map(({ url, basename, alt, blurhash }, i) => (
             <SwiperSlide key={i}>
               <Image
                 width={1440}
                 height={1080}
                 priority
+                placeholder="blur"
+                blurDataURL={blurhash}
                 sizes="(max-width: 739.98px) 93vw, 100vw"
-                src={item}
-                alt={'Image ' + (i + 1)}
+                src={url}
+                alt={alt || basename}
                 className={clsx(s.hero_pic, s.main)}
               />
             </SwiperSlide>
@@ -111,9 +101,7 @@ const Hero = () => {
       </div>
 
       <div className={clsx('container', s.hero_inner)}>
-        <h1 className={s.hero_title}>
-          Ваш стиль – наша робота, ваша впевненість – наше досягнення.
-        </h1>
+        <h1 className={s.hero_title}>{title}</h1>
 
         <Swiper
           {...swiperThumbParams}
@@ -123,12 +111,17 @@ const Hero = () => {
           }
           className={s.hero_thumbs}
         >
-          {thumbs.map((item, j) => (
+          {thumbs.map(({ url, basename, alt, blurhash }, j) => (
             <SwiperSlide key={j}>
               <Image
+                width={375}
+                height={234}
+                sizes="375px"
                 loading="eager"
-                src={item}
-                alt={'Image ' + (j + 1)}
+                placeholder="blur"
+                blurDataURL={blurhash}
+                src={url}
+                alt={alt || basename}
                 className={clsx(s.hero_pic, s.thumbs)}
               />
             </SwiperSlide>
@@ -136,12 +129,12 @@ const Hero = () => {
         </Swiper>
 
         <a
-          href={BTN_MOCK.link}
+          href={orderLink}
           target="_blank"
           rel="noopener noreferrer"
           className={clsx('btn btn--primary', s.hero_cta)}
         >
-          {BTN_MOCK.title}
+          {orderLabel}
         </a>
 
         <div id="swiper-pagination-hero" className={s.hero_pagination} />
