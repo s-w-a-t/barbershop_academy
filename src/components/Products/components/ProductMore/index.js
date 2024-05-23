@@ -10,7 +10,7 @@ const ProductMore = ({ title, label, pic, descr, footnote }) => {
       <span className={s.productMore_label}>{label}</span>
 
       <Image
-        src={pic}
+        src={pic.url}
         alt={title}
         placeholder="blur"
         blurDataURL={pic.blurhash}

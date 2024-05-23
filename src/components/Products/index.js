@@ -81,7 +81,7 @@ const Products = ({ title, buttonText, footnote, list }) => {
                   <ProductMore
                     title={name}
                     label={label}
-                    pic={pic.url}
+                    pic={pic}
                     descr={description}
                     footnote={footnote}
                   />

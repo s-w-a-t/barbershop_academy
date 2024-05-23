@@ -24,7 +24,7 @@ const Socials = ({ instagram, telegram, variant, className }) => {
           <a
             href={link}
             target="_blank"
-            rel="noopener nofollow"
+            rel="noopener nofollow noreferrer"
             aria-label={name}
             className={s.socials_link}
           >

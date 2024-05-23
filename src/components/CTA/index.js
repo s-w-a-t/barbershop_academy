@@ -12,7 +12,7 @@ const CTA = ({ title, descr, btnText, btnLink }) => {
       <a
         href={btnLink}
         target="_blank"
-        rel="noopener nofollow"
+        rel="noopener nofollow noreferrer"
         className={clsx('btn btn--secondary', s.cta_btn)}
       >
         {btnText}

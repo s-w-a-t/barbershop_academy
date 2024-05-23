@@ -68,7 +68,7 @@ const Header = ({ logo, menu, orderLabel, orderLink }) => {
       />
 
       <button
-        tyoe="button"
+        type="button"
         aria-label="Menu"
         onClick={handleToggle}
         className={clsx(s.header_hamb, { [s.active]: isMenuOpen })}

@@ -1,3 +1,4 @@
+import React from 'react'
 import './globals.scss'
 import { Montserrat, Rubik } from 'next/font/google'
 import clsx from 'clsx'
@@ -21,7 +22,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata = {
-  title: 'Brutal Barbershop',
+  title: 'Brutal Barbershop & Academy',
   description:
     'Brutal barbershop - це більш, ніж просто чоловіча перукарня. Місце, де вас проведуть за ручку до неповторного стилю за допомогою пари ножиць та машинки.',
 }
