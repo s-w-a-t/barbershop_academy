@@ -1,5 +1,5 @@
 import React from 'react'
-// import Script from 'next/script'
+import Script from 'next/script'
 import './globals.scss'
 import { Montserrat, Rubik } from 'next/font/google'
 import clsx from 'clsx'
@@ -51,34 +51,31 @@ const RootLayout = async ({ children }) => {
   const { data } = await performRequest({ query: GLOBAL_QUERY })
   const { logo, menu, copyright, orderLabel, orderLink, telegram, instagram } =
     data?.layout || {}
-
-  const GTM_ID = 'GTM-KWH44WL5' // ЗАМЕНИ на свой ID  
   return (
     <html lang="uk">
       <head>
-        {/* Google Tag Manager Head */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id=${GTM_ID}'+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','${GTM_ID}');
-            `,
-          }}
-        />
+        {/* Google Tag Manager */}
+        <Script id="gtm-head" strategy="beforeInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-KWH44WL5');
+          `}
+        </Script>
+        {/* End Google Tag Manager */}
       </head>
       <body className={clsx(rubik.variable, montserrat.variable)}>
-        {/* Google Tag Manager NoScript */}
-        <noscript
-          dangerouslySetInnerHTML={{
-            __html: `
-              <iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}"
-              height="0" width="0" style="display:none;visibility:hidden"></iframe>
-            `,
-          }}
-        />
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-KWH44WL5"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          ></iframe>
+        </noscript>
         {/* End Google Tag Manager (noscript) */}
         <Header
           logo={logo.url}
