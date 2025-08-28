@@ -247,6 +247,18 @@ section {
     }
   }
 
+  &--third {
+    color: var(--red);
+    background-color: var(--black);
+    border-color: var(--red);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--black);
+      background-color: var(--red);
+    }
+  }
+
   &--small {
     font-size: 14px;
   }
